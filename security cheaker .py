@@ -35,63 +35,63 @@ if platform.system() == "Windows":
 
             
             if int(min_length) < 8:
-                print("⚠️ Warning: The password is too short, make it at least 8 letters.")
+                print(" Warning: The password is too short, make it at least 8 letters.")
             else:
-                print("✅ The password length meets the security policy.")
+                print(" The password length meets the security policy.")
         except (IndexError, ValueError):
-            print("❌ Error extracting the minimum password length.")
+            print("Error extracting the minimum password length.")
     else:
-        print("❌ The password policy was not found.")
+        print("The password policy was not found.")
 else:
-    print("❌ You can't check password policy on non-Windows systems.")
-# ✅ فحص إعدادات SSH في Windows
+    print("You can't check password policy on non-Windows systems.")
+
 
 if platform.system() == "Windows":
-    print("\n🔍 Let's check SSH configuration...\n")
+    print("\n Let's check SSH configuration...\n")
 
-    # 📌 التحقق من وجود خدمة SSH
+  
     ssh_status = os.popen('sc query sshd').read()
 
     if "RUNNING" in ssh_status:
-        print("✅ SSH service is running.\n")
+        print(" SSH service is running.\n")
     elif "STOPPED" in ssh_status:
-        print("❌ SSH service is installed but not running.\n")
+        print(" SSH service is installed but not running.\n")
     else:
-        print("❌ SSH service is not installed on this system.\n")
+        print(" SSH service is not installed on this system.\n")
         exit()
 
-    # 📂 التحقق من وجود ملف إعدادات SSH
+    
     ssh_config_path = "C:\\ProgramData\\ssh\\sshd_config"
 
     if os.path.exists(ssh_config_path):
-        print(f"📄 Found SSH config file at: {ssh_config_path}\n")
+        print(f" Found SSH config file at: {ssh_config_path}\n")
 
-        # 🔍 قراءة محتويات ملف الإعدادات
+      
         with open(ssh_config_path, 'r') as file:
             ssh_config = file.readlines()
 
-        # ✅ التحقق من الإعدادات الهامة
+        
         for line in ssh_config:
             line = line.strip()
 
-            # منفذ SSH (Port)
+            
             if line.startswith("Port"):
-                print(f"🔢 SSH Port: {line.split()[1]}")
+                print(f"SSH Port: {line.split()[1]}")
 
-            # هل تسجيل الدخول بالجذر مسموح؟ (PermitRootLogin)
+   
             if "PermitRootLogin" in line:
-                print(f"👤 PermitRootLogin: {line.split()[1]}")
+                print(f" PermitRootLogin: {line.split()[1]}")
                 if "yes" in line:
-                    print("⚠️ WARNING: Root login is enabled. This is a security risk!")
+                    print(" WARNING: Root login is enabled. This is a security risk!")
 
-            # هل يتم السماح بتسجيل الدخول بكلمة مرور؟ (PasswordAuthentication)
+            
             if "PasswordAuthentication" in line:
-                print(f"🔑 PasswordAuthentication: {line.split()[1]}")
+                print(f"PasswordAuthentication: {line.split()[1]}")
                 if "yes" in line:
-                    print("⚠️ WARNING: Password authentication is enabled. Consider using SSH keys!")
+                    print(" WARNING: Password authentication is enabled. Consider using SSH keys!")
 
     else:
-        print("❌ SSH configuration file not found.\n")
+        print(" SSH configuration file not found.\n")
 
 else:
-    print("❌ SSH check is only available on Windows systems.")
+    print("SSH check is only available on Windows systems.")
